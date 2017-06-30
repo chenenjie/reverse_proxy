@@ -1,0 +1,21 @@
+[package]
+name = "reverser_proxy"
+version = "0.1.0"
+authors = ["chenej <chenej@gzyitop.com>"]
+
+[lib]
+name = "proxy"
+path="src/lib.rs"
+
+[dependencies]
+error-chain = "*"
+hyper = "*"
+tokio-core = "*"
+futures = "*"
+log = "*"
+env_logger = "*"
+regex = "*"
+toml = "*"
+serde = "*"
+serde_derive = "*"
+
