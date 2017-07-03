@@ -2,11 +2,25 @@ extern crate regex;
 
 use regex::RegexSet;
 use regex::Regex;
+use std::collections::HashMap;
 
 fn main() {
     let set = RegexSet::new(&[
         r"@(.*)\.com",
     ]).unwrap();
+    let pattern = format!("{}{}", "(/eern/", r"(.*))|\z");
+    let mut map = HashMap::new();
+    map.insert("url1", r"(/eern/(.*))|\z");
+    map.insert("url2", r"(/eern/(.*))|\z");
+    map.insert("url3", r"(/eern/(.*))|\z");
+    map.insert("url4", pattern.as_str());
+
+    let translate_regex: HashMap<&str, Regex> = map.iter().map(|(key, value)|{
+        (key.to_owned(), Regex::new(value).unwrap())
+    }).collect();
+    //translate_regex.get("url1").fuck();
+
+    println!("{:?}", translate_regex);
 
     let re = Regex::new(r"(/eern/(.*))|\z").unwrap();
     let re1 = Regex::new(r"wfefn").unwrap();
@@ -33,7 +47,7 @@ fn main() {
         None
     }).collect();       
 
-    println!("{:?}", result);
+    //println!("{:?}", result);
 
     //let matchs = set.matches("foo@example.com");
     //println!("{:?}", matchs);

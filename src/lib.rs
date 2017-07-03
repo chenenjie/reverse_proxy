@@ -46,8 +46,11 @@ pub fn run() -> error::Result<()> {
 
     let client = hyper::Client::new(&handle);
 
+    let routes = config::get_config().expect("config is error");
+    println!("{:?}", routes);
+
     let server = sock.incoming().for_each(|(sock, remote_addr)|{
-        let service = proxy::Proxy{client: client.clone()};
+        let service = proxy::Proxy{client: client.clone(), routes: routes.clone()};
         futures::future::ok(remote_addr).and_then(|remote_addr| {
             http.bind_connection(&handle, sock, remote_addr, service);
             Ok(())

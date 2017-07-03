@@ -4,14 +4,19 @@ use std::fs::File;
 use toml;
 use error;
 use std::io::Read;
+use regex::Regex;
 
 #[derive(Deserialize, Debug, Clone)]
 struct Config{
     pub routes: HashMap<String, String>,
 }
 
+struct MappingRoute{
+    pub routes: HashMap<String, Regex>,
+}
 
-fn get_config() -> error::Result<Config> {
+
+pub fn get_config() -> error::Result<HashMap<String, Regex>> {
     let mut file_str = env::current_dir()?;
     file_str.push("proxy.toml");
     let mut file = File::open(file_str)?;
@@ -19,7 +24,16 @@ fn get_config() -> error::Result<Config> {
     file.read_to_string(&mut content);
 
     let config: Config = toml::from_str(&content)?;
-    Ok(config)
+
+    let routes = config.routes.iter().map(|(key, value)|{
+        //println!("({}{}", key, r"/(.*))");
+        (value.clone(), Regex::new(&format!("({}{}", key, r"/(.*))|\z")).unwrap())
+    }).collect();
+
+    //let map_route = MappingRoute{
+        //routes: routes,
+    //};
+    Ok(routes)
 }
 
 

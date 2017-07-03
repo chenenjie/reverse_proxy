@@ -9,7 +9,7 @@ path="src/lib.rs"
 
 [dependencies]
 error-chain = "*"
-hyper = "*"
+hyper = { "git" = "https://github.com/hyperium/hyper.git" }
 tokio-core = "*"
 futures = "*"
 log = "*"
